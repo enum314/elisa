@@ -6,10 +6,7 @@ import {
 	IconStack2,
 } from '@tabler/icons';
 
-export enum SiteSetting {
-	ID = 'elisa:software',
-	companyName = 'companyName',
-}
+export const SiteSettingId = 'elisa:software';
 
 export enum Permission {
 	AnnouncementView = 'announcement.view',
