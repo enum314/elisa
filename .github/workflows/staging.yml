@@ -87,5 +87,5 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - run: pnpm install
-
+      - run: pnpx prisma generate
       - run: pnpm test
