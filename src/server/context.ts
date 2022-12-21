@@ -2,10 +2,13 @@ import { getServerAuthSession } from '@server/common/getServerAuthSession';
 import type { inferAsyncReturnType } from '@trpc/server';
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { prisma } from '@utils/prisma';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Session } from 'next-auth';
 
 type CreateContextOptions = {
 	session: Session | null;
+	req: NextApiRequest;
+	res: NextApiResponse;
 };
 
 /** Use this helper for:
@@ -15,8 +18,8 @@ type CreateContextOptions = {
  **/
 export const createContextInner = async (opts: CreateContextOptions) => {
 	return {
-		session: opts.session,
 		prisma,
+		...opts,
 	};
 };
 
@@ -32,6 +35,8 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 
 	return await createContextInner({
 		session,
+		req,
+		res,
 	});
 };
 

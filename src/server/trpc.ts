@@ -6,25 +6,34 @@ const t = initTRPC.context<Context>().create({});
 
 export const router = t.router;
 export const procedure = t.procedure;
+export const middleware = t.middleware;
 
-/**
- * Reusable middleware to ensure
- * users are logged in
- */
-const isAuthed = t.middleware(({ ctx, next }) => {
-	if (!ctx.session || !ctx.session.user) {
+export const authProcedure = t.procedure.use(
+	t.middleware(({ ctx, next }) => {
+		if (ctx.session?.user) {
+			return next({
+				ctx: {
+					// infers the `session` as non-nullable
+					session: { ...ctx.session, user: ctx.session.user },
+				},
+			});
+		}
+
 		throw new TRPCError({ code: 'UNAUTHORIZED' });
-	}
+	}),
+);
 
-	return next({
-		ctx: {
-			// infers the `session` as non-nullable
-			session: { ...ctx.session, user: ctx.session.user },
-		},
-	});
-});
+export const adminProcedure = t.procedure.use(
+	t.middleware(({ ctx, next }) => {
+		if (ctx.session?.user?.isAdmin) {
+			return next({
+				ctx: {
+					// infers the `session` as non-nullable
+					session: { ...ctx.session, user: ctx.session.user },
+				},
+			});
+		}
 
-/**
- * Auth procedure
- **/
-export const authProcedure = t.procedure.use(isAuthed);
+		throw new TRPCError({ code: 'UNAUTHORIZED' });
+	}),
+);

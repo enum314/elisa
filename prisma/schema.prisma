@@ -89,3 +89,9 @@ model Role {
     users       User[]
     permissions String[]
 }
+
+model SiteSettings {
+    id String @id @unique
+
+    companyName String @default("Elisa LMS")
+}
