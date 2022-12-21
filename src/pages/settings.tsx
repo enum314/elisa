@@ -4,7 +4,7 @@ import { GeneralTab } from '@modules/settings/GeneralTab';
 import { PrivacyTab } from '@modules/settings/PrivacyTab';
 import { ProfileTab } from '@modules/settings/ProfileTab';
 import { createGetServerSideProps } from '@server/common/createGetServerSideProps';
-import { DashboardLinks } from '@utils/Constants';
+import { DashboardLinks } from '@utils/DashboardLinks';
 import { NextSeo } from 'next-seo';
 
 export const getServerSideProps = createGetServerSideProps('user');

@@ -12,4 +12,10 @@ export default trpcNext.createNextApiHandler({
 					console.error(`❌ tRPC failed on ${path}: ${error}`);
 			  }
 			: undefined,
+	/**
+	 * Enable query batching
+	 */
+	batching: {
+		enabled: true,
+	},
 });

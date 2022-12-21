@@ -6,7 +6,7 @@ import {
 	RateLimiterRes,
 } from 'rate-limiter-flexible';
 
-import { middleware } from './trpc';
+import { middleware } from '../trpc';
 
 interface RateLimitOptions {
 	points: number;

@@ -1,4 +1,4 @@
-import { ratelimit } from '@server/ratelimit';
+import { ratelimit } from '@server/middlewares/ratelimit';
 import { authProcedure, router } from '@server/trpc';
 import { TRPCError } from '@trpc/server';
 import { Gender } from '@utils/Constants';
