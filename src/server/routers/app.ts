@@ -1,4 +1,4 @@
-import { websocket } from '@server/common/WebSocket';
+import { websocket } from '@server/common/websocket';
 import { authProcedure, router } from '@server/trpc';
 import { observable } from '@trpc/server/observable';
 

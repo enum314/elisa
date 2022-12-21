@@ -3,9 +3,8 @@ import {
 	IconAlertCircle,
 	IconArticle,
 	IconHome,
-	IconStack2
+	IconStack2,
 } from '@tabler/icons';
-
 
 export const DashboardLinks: Record<string, MainLinkProps[]> = {
 	Main: [
