@@ -6,39 +6,11 @@ import {
 	RateLimiterRes,
 } from 'rate-limiter-flexible';
 
-import { getIPAddressFromRequest } from './common/getIPAddressFromRequest';
-import { middleware } from './trpc';
-
-function createRateLimitHeaders(
-	state: RateLimiterRes,
-	opts: IRateLimiterStoreOptions,
-): RateLimitResponse['headers'] {
-	return [
-		['Retry-After', `${state.msBeforeNext / 1000}`],
-		['X-RateLimit-Limit', `${<number>opts.points}`],
-		['X-RateLimit-Remaining', `${state.remainingPoints}`],
-		[
-			'X-RateLimit-Reset',
-			new Date(Date.now() + state.msBeforeNext)
-				.getMilliseconds()
-				.toString(),
-		],
-	];
-}
+import { middleware } from '../trpc';
 
 interface RateLimitOptions {
 	points: number;
 	duration: number;
-}
-
-interface RateLimitResponse {
-	rateLimited: boolean;
-	headers: [
-		['Retry-After', string],
-		['X-RateLimit-Limit', string],
-		['X-RateLimit-Remaining', string],
-		['X-RateLimit-Reset', string],
-	];
 }
 
 async function consume(
@@ -56,17 +28,15 @@ async function consume(
 	const rateLimiter = new RateLimiterRedis(opts);
 
 	try {
-		const state = await rateLimiter.consume(userId);
+		await rateLimiter.consume(userId);
 
 		return {
 			rateLimited: false,
-			headers: createRateLimitHeaders(state, opts),
 		};
 	} catch (err) {
 		if (err instanceof RateLimiterRes) {
 			return {
 				rateLimited: true,
-				headers: createRateLimitHeaders(err, opts),
 			};
 		}
 
@@ -78,15 +48,7 @@ export const ratelimit = (key: string, opts: RateLimitOptions) =>
 	middleware(async ({ ctx, next }) => {
 		if (ctx.session?.user) {
 			try {
-				const status = await consume(
-					getIPAddressFromRequest(ctx.req),
-					key,
-					opts,
-				);
-
-				for (const [key, value] of status.headers) {
-					ctx.res.setHeader(key, value);
-				}
+				const status = await consume(ctx.session.user.id, key, opts);
 
 				if (status.rateLimited) {
 					throw new TRPCError({
@@ -101,8 +63,6 @@ export const ratelimit = (key: string, opts: RateLimitOptions) =>
 							...ctx.session,
 							user: ctx.session.user,
 						},
-						req: ctx.req,
-						res: ctx.res,
 					},
 				});
 			} catch (err) {

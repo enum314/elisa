@@ -1,27 +1,11 @@
-import type { MainLinkProps } from '@components/MainLink';
+import { MainLinkProps } from '@components/MainLink';
 import {
 	IconAlertCircle,
 	IconArticle,
 	IconHome,
-	IconStack2,
+	IconStack2
 } from '@tabler/icons';
 
-export enum SiteSetting {
-	ID = 'elisa:software',
-	companyName = 'companyName',
-}
-
-export enum Permission {
-	AnnouncementView = 'announcement.view',
-	AnnouncementCreate = 'announcement.create',
-	AnnouncementEdit = 'announcement.edit',
-	AnnouncementDelete = 'announcement.delete',
-}
-
-export enum Gender {
-	Male = 'Male',
-	Female = 'Female',
-}
 
 export const DashboardLinks: Record<string, MainLinkProps[]> = {
 	Main: [

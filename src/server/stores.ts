@@ -1,4 +1,4 @@
-import { SiteSetting } from '@utils/Constants';
+import { SiteSettingId } from '@utils/Constants';
 import Store from '@utils/Store';
 
-export const siteSettings = new Store<{ value: string }>(SiteSetting.ID, 300);
+export const siteSettings = new Store<{ value: string }>(SiteSettingId, 300);

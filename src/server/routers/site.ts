@@ -1,20 +1,20 @@
 import { siteSettings } from '@server/stores';
-import { procedure, router } from '@server/trpc';
-import { SiteSetting } from '@utils/Constants';
+import { publicProcedure, router } from '@server/trpc';
+import { SiteSettingId } from '@utils/Constants';
 
 export const siteRouter = router({
-	companyName: procedure.query(async ({ ctx }) => {
-		if (await siteSettings.has(SiteSetting.companyName)) {
+	companyName: publicProcedure.query(async ({ ctx }) => {
+		if (await siteSettings.has('companyName')) {
 			return {
 				companyName:
-					(await siteSettings.get(SiteSetting.companyName))?.value ??
+					(await siteSettings.get('companyName'))?.value ??
 					'Elisa LMS',
 			};
 		}
 
 		const data = await ctx.prisma.siteSettings.findUnique({
 			where: {
-				id: SiteSetting.ID,
+				id: SiteSettingId,
 			},
 			select: {
 				companyName: true,
@@ -24,13 +24,13 @@ export const siteRouter = router({
 		if (!data) {
 			await ctx.prisma.siteSettings.create({
 				data: {
-					id: SiteSetting.ID,
+					id: SiteSettingId,
 					companyName: 'Elisa LMS',
 				},
 			});
 		}
 
-		await siteSettings.set(SiteSetting.ID, {
+		await siteSettings.set('companyName', {
 			value: data?.companyName ?? 'Elisa LMS',
 		});
 
