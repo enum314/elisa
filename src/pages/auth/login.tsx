@@ -1,5 +1,5 @@
 import { Button, Image } from '@mantine/core';
-import { createGetServerSideProps } from '@server/common/createServerSideProps';
+import { createGetServerSideProps } from '@server/common/createGetServerSideProps';
 import { IconBrandDiscord } from '@tabler/icons';
 import { trpc } from '@utils/trpc';
 import { signIn } from 'next-auth/react';

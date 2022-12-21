@@ -1,5 +1,5 @@
 import Layout from '@modules/Layout';
-import { createGetServerSideProps } from '@server/common/createServerSideProps';
+import { createGetServerSideProps } from '@server/common/createGetServerSideProps';
 import { DashboardLinks } from '@utils/Constants';
 import { NextSeo } from 'next-seo';
 
