@@ -79,6 +79,8 @@ model Profile {
 
     allowFriendships  Boolean @default(true)
     allowChatRequests Boolean @default(true)
+
+    globalChat        Boolean @default(true)
 }
 
 model Role {
