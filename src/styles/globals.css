@@ -84,7 +84,7 @@ html,
 	scroll-behavior: smooth;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	@apply transition-colors ease-linear scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-secondary-700 scrollbar-thumb-rounded-lg;
+	@apply transition-all duration-200 ease-linear;
 }
 
 button:focus {

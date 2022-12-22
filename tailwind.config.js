@@ -42,10 +42,7 @@ const config = {
 			},
 		},
 	},
-	plugins: [
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		require('tailwind-scrollbar')({ nocompatible: true }),
-	],
+	plugins: [],
 };
 
 module.exports = config;

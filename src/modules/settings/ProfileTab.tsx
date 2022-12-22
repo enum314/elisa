@@ -36,8 +36,9 @@ export function ProfileTab() {
 						readOnly
 						value={profile.lastName}
 					/>
+				</div>
+				<div className="p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
 					<Select
-						withAsterisk
 						label="Gender"
 						placeholder="Your gender"
 						data={[
@@ -48,7 +49,6 @@ export function ProfileTab() {
 						value={profile.gender}
 					/>
 					<DatePicker
-						withAsterisk
 						placeholder="Your birthdate"
 						label="Birthdate"
 						readOnly

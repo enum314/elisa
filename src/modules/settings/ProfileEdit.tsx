@@ -31,7 +31,7 @@ export function ProfileEdit() {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 			<div className="bg-secondary-800 rounded-md border-t-4 border-yellow-400">
-				<h2 className="py-2 px-5 bg-secondary-600">Bio</h2>
+				<h2 className="py-2 px-5 bg-secondary-600">Biography</h2>
 				<form className="p-5">
 					<Textarea
 						label="Tell us something great to describe yourself."

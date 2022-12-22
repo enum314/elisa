@@ -16,12 +16,18 @@ export function GeneralTab() {
 					value={session.data?.user?.id}
 				/>
 				<TextInput
-					className="cursor-text"
 					label="Email Address"
 					description="This is your email address used in the application."
 					variant="filled"
 					readOnly
 					value={session.data?.user?.email ?? ''}
+				/>
+				<TextInput
+					label="Account Username"
+					description="This is your username used in the application."
+					variant="filled"
+					readOnly
+					value={session.data?.user?.name ?? ''}
 				/>
 			</form>
 		</div>
