@@ -46,7 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 	const [opened, setOpened] = useState(false);
 	const keys = useMemo(() => Object.keys(links), [links]);
 
-	const { data: site } = trpc.site.companyName.useQuery();
+	const { data: companyName } = trpc.site.companyName.useQuery();
 	const { data: profile, isLoading } = trpc.profile.self.useQuery();
 
 	return (
@@ -157,7 +157,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 												<div className="flex items-center">
 													<Image
 														src="/android-chrome-192x192.png"
-														alt={site?.companyName}
+														alt={companyName}
 														width={64}
 														height={64}
 													/>
@@ -168,7 +168,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 														}}
 													>
 														<h1 className="text-3xl font-base">
-															{site?.companyName ??
+															{companyName ??
 																'Elisa LMS'}
 														</h1>
 													</MediaQuery>
