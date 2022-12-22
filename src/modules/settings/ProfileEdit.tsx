@@ -1,22 +1,21 @@
 import { Button, Textarea, TextInput } from '@mantine/core';
 import { useShallowEffect } from '@mantine/hooks';
-import { HandleMutationError } from '@modules/HandleMutationError';
-import { HandleMutationSuccess } from '@modules/HandleMutationSuccess';
+import { HandleTRPCError } from '@modules/common/HandleTRPCError';
+import { HandleTRPCSuccess } from '@modules/common/HandleTRPCSuccess';
 import { trpc } from '@utils/trpc';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 export function ProfileEdit() {
 	const utils = trpc.useContext();
-	const { data } = trpc.profile.self.useQuery();
-	const profile = useMemo(() => data?.profile, [data]);
+	const { data: profile } = trpc.profile.self.useQuery();
 
 	const mutation = trpc.profile.editMain.useMutation({
-		onSuccess: HandleMutationSuccess({
+		onSuccess: HandleTRPCSuccess({
 			callback() {
 				utils.profile.self.invalidate();
 			},
 		}),
-		onError: HandleMutationError(),
+		onError: HandleTRPCError(),
 	});
 
 	const [biography, setBiography] = useState('');

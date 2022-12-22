@@ -1,3 +1,4 @@
+import Loading from '@components/Loading';
 import MainLink, { MainLinkProps } from '@components/MainLink';
 import {
 	AppShell,
@@ -27,6 +28,7 @@ import { useSession } from 'next-auth/react';
 import React, { useMemo, useState } from 'react';
 
 import Logout from './Logout';
+import { SetupProfile } from './SetupProfile';
 
 interface LayoutProps {
 	links: Record<string, MainLinkProps[]>;
@@ -43,7 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 	const keys = useMemo(() => Object.keys(links), [links]);
 
 	const { data: site } = trpc.site.companyName.useQuery();
-	const { data: self } = trpc.profile.self.useQuery();
+	const { data: profile, isLoading } = trpc.profile.self.useQuery();
 
 	return (
 		<MantineProvider
@@ -72,196 +74,224 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 		>
 			<ModalsProvider>
 				<NotificationsProvider>
-					<AppShell
-						classNames={{
-							root: `text-white ${roboto.className}`,
-							main: 'bg-secondary-700 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-secondary-700 scrollbar-thumb-rounded-lg',
-						}}
-						navbar={
-							<Navbar
-								className="bg-secondary-800 text-white h-full"
-								hiddenBreakpoint="sm"
-								py="xs"
-								hidden={!opened}
-								width={{ sm: 200, md: 250, lg: 300 }}
-							>
-								{keys.map((section) => {
-									return (
-										<div key={section}>
-											<Navbar.Section px="xs">
-												<h2 className="text-base tracking-wide mb-1">
-													{section}
-												</h2>
-												{links[section].map((link) => (
-													<MainLink
-														{...link}
-														key={link.label}
-														onClick={() =>
-															setOpened(false)
-														}
-													/>
-												))}
-											</Navbar.Section>
-											<Divider className="my-3" />
-										</div>
-									);
-								})}
-							</Navbar>
-						}
-						header={
-							<Header
-								height={70}
-								p="md"
-								className="bg-secondary-900 text-white border-b-2 border-gray-900"
-							>
-								<div
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										height: '100%',
-									}}
+					{profile && !isLoading ? (
+						<AppShell
+							classNames={{
+								root: `text-white ${roboto.className}`,
+								main: 'bg-secondary-700 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-secondary-700 scrollbar-thumb-rounded-lg',
+							}}
+							navbar={
+								<Navbar
+									className="bg-secondary-800 text-white h-full"
+									hiddenBreakpoint="sm"
+									py="xs"
+									hidden={!opened}
+									width={{ sm: 200, md: 250 }}
 								>
-									<MediaQuery
-										largerThan="sm"
-										styles={{ display: 'none' }}
+									{keys.map((section) => {
+										return (
+											<div key={section}>
+												<Navbar.Section px="xs">
+													<h2 className="text-base tracking-wide mb-1">
+														{section}
+													</h2>
+													{links[section].map(
+														(link) => (
+															<MainLink
+																{...link}
+																key={link.label}
+																onClick={() =>
+																	setOpened(
+																		false,
+																	)
+																}
+															/>
+														),
+													)}
+												</Navbar.Section>
+												<Divider className="my-3" />
+											</div>
+										);
+									})}
+								</Navbar>
+							}
+							header={
+								<Header
+									height={70}
+									p="md"
+									className="bg-secondary-900 text-white border-b-2 border-gray-900"
+								>
+									<div
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											height: '100%',
+										}}
 									>
-										<Burger
-											opened={opened}
-											color="white"
-											onClick={() => setOpened((o) => !o)}
-											size="sm"
-											mr="lg"
-										/>
-									</MediaQuery>
-									<div className="flex items-center">
-										<Image
-											src="/android-chrome-192x192.png"
-											alt={site?.companyName}
-											width={64}
-											height={64}
-										/>
 										<MediaQuery
-											smallerThan={'sm'}
+											largerThan="sm"
 											styles={{ display: 'none' }}
 										>
-											<h1 className="text-3xl font-base">
-												{site?.companyName ??
-													'Elisa LMS'}
-											</h1>
+											<Burger
+												opened={opened}
+												color="white"
+												onClick={() =>
+													setOpened((o) => !o)
+												}
+												size="sm"
+												mr="lg"
+											/>
 										</MediaQuery>
-									</div>
-									<div className="ml-auto flex items-center mr-5">
-										<Menu
-											openDelay={100}
-											closeDelay={400}
-											shadow="lg"
-											withArrow
-											width={200}
-										>
-											<Menu.Target>
-												<UnstyledButton className="bg-secondary-700 flex items-center sm:px-3 sm:py-2 rounded-md gap-x-2">
-													<Avatar
-														src={
-															session.data?.user
-																?.image
-														}
-														alt="your avatar"
-													/>
-													<MediaQuery
-														smallerThan="sm"
-														styles={{
-															display: 'none',
-														}}
-													>
-														<p>
-															{self?.profile
-																? `${self.profile.firstName} ${self.profile.lastName}`
-																: session.data
-																		?.user
-																		?.name}
-														</p>
-													</MediaQuery>
-												</UnstyledButton>
-											</Menu.Target>
-
-											<Menu.Dropdown className="-ml-5">
-												<Menu.Label>
-													{session.data?.user?.email}
-												</Menu.Label>
-												<Menu.Item
-													icon={
-														<IconUserCircle
-															size={14}
-														/>
-													}
-													onClick={() =>
-														router.push(
-															`/profile/${session.data?.user?.id}`,
-														)
-													}
-												>
-													My Profile
-												</Menu.Item>
-												<Menu.Item
-													icon={
-														<IconMessageCircle
-															size={14}
-														/>
-													}
-													onClick={() =>
-														router.push(`/messages`)
-													}
-												>
-													Messages
-												</Menu.Item>
-												<Menu.Item
-													icon={
-														<IconSettings
-															size={14}
-														/>
-													}
-													onClick={() =>
-														router.push('/settings')
-													}
-												>
-													Settings
-												</Menu.Item>
-
-												{session.data?.user?.isAdmin ? (
-													<>
-														<Menu.Divider />
-
-														<Menu.Label>
-															Administration
-														</Menu.Label>
-														<Menu.Item
-															icon={
-																<IconLayoutDashboard
-																	color="white"
-																	size={14}
-																/>
+										<div className="flex items-center">
+											<Image
+												src="/android-chrome-192x192.png"
+												alt={site?.companyName}
+												width={64}
+												height={64}
+											/>
+											<MediaQuery
+												smallerThan={'sm'}
+												styles={{ display: 'none' }}
+											>
+												<h1 className="text-3xl font-base">
+													{site?.companyName ??
+														'Elisa LMS'}
+												</h1>
+											</MediaQuery>
+										</div>
+										<div className="ml-auto flex items-center mr-5">
+											<Menu
+												openDelay={100}
+												closeDelay={400}
+												shadow="lg"
+												withArrow
+												width={200}
+											>
+												<Menu.Target>
+													<UnstyledButton className="bg-secondary-700 flex items-center sm:px-3 sm:py-2 rounded-md gap-x-2">
+														<Avatar
+															src={
+																session.data
+																	?.user
+																	?.image
 															}
-															onClick={() =>
-																router.push(
-																	'/admin',
-																)
-															}
+															alt="your avatar"
+														/>
+														<MediaQuery
+															smallerThan="sm"
+															styles={{
+																display: 'none',
+															}}
 														>
-															Dashboard
-														</Menu.Item>
-													</>
-												) : null}
-												<Menu.Divider />
-												<Logout />
-											</Menu.Dropdown>
-										</Menu>
+															<p>
+																{profile
+																	? `${profile.firstName} ${profile.lastName}`
+																	: session
+																			.data
+																			?.user
+																			?.name}
+															</p>
+														</MediaQuery>
+													</UnstyledButton>
+												</Menu.Target>
+
+												<Menu.Dropdown className="-ml-5">
+													<Menu.Label>
+														{
+															session.data?.user
+																?.email
+														}
+													</Menu.Label>
+													<Menu.Item
+														icon={
+															<IconUserCircle
+																size={14}
+															/>
+														}
+														onClick={() =>
+															router.push(
+																`/profile/${session.data?.user?.id}`,
+															)
+														}
+													>
+														My Profile
+													</Menu.Item>
+													<Menu.Item
+														icon={
+															<IconMessageCircle
+																size={14}
+															/>
+														}
+														onClick={() =>
+															router.push(
+																`/messages`,
+															)
+														}
+													>
+														Messages
+													</Menu.Item>
+													<Menu.Item
+														icon={
+															<IconSettings
+																size={14}
+															/>
+														}
+														onClick={() =>
+															router.push(
+																'/settings',
+															)
+														}
+													>
+														Settings
+													</Menu.Item>
+
+													{session.data?.user
+														?.isAdmin ? (
+														<>
+															<Menu.Divider />
+
+															<Menu.Label>
+																Administration
+															</Menu.Label>
+															<Menu.Item
+																icon={
+																	<IconLayoutDashboard
+																		color="white"
+																		size={
+																			14
+																		}
+																	/>
+																}
+																onClick={() =>
+																	router.push(
+																		'/admin',
+																	)
+																}
+															>
+																Dashboard
+															</Menu.Item>
+														</>
+													) : null}
+													<Menu.Divider />
+													<Logout />
+												</Menu.Dropdown>
+											</Menu>
+										</div>
 									</div>
-								</div>
-							</Header>
-						}
-					>
-						{children}
-					</AppShell>
+								</Header>
+							}
+						>
+							{children}
+						</AppShell>
+					) : null}
+					{!profile && !isLoading ? (
+						<div
+							className={`text-white p-5 sm:p-10 md:p-20 lg:p-40 ${roboto.className} bg-secondary-700 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-secondary-700 scrollbar-thumb-rounded-lg`}
+						>
+							<SetupProfile />
+						</div>
+					) : null}
+					{isLoading ? <Loading variant="dots" /> : null}
 				</NotificationsProvider>
 			</ModalsProvider>
 		</MantineProvider>

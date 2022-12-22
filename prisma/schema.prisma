@@ -75,7 +75,7 @@ model Profile {
     gender     String
 
     biography String @default("This user has no bio.") @db.Text
-    nickname  String @default("This user has no nickname.")
+    nickname  String @default("")
 
     allowFriendships  Boolean @default(true)
     allowChatRequests Boolean @default(true)

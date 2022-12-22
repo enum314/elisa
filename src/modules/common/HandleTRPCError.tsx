@@ -12,7 +12,7 @@ interface HandleMutationErrorOptions {
 	messages: [TRPC_ERROR_CODE_KEY, string][];
 }
 
-export function HandleMutationError(options?: HandleMutationErrorOptions) {
+export function HandleTRPCError(options?: HandleMutationErrorOptions) {
 	return (ctx: { message: string; data: Maybe<DefaultErrorData> }) => {
 		if (options?.messages) {
 			for (const [status, message] of options.messages) {
