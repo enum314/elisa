@@ -1,35 +1,96 @@
-import { TextInput } from '@mantine/core';
+import Loading from '@components/Loading';
+import { Select, TextInput } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
+import { trpc } from '@utils/trpc';
 import { useSession } from 'next-auth/react';
 
 export function GeneralTab() {
 	const session = useSession();
 
+	const { data: profile, isLoading } = trpc.profile.self.useQuery();
+
+	if (isLoading || !profile) {
+		return <Loading className="mt-52" />;
+	}
+
 	return (
-		<div className="bg-secondary-800 rounded-md border-t-4 border-green-400">
-			<h2 className="py-2 px-5 bg-secondary-400">General</h2>
-			<form className="p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-				<TextInput
-					label="Account ID"
-					description="This is your account ID used for identification."
-					variant="filled"
-					readOnly
-					value={session.data?.user?.id}
-				/>
-				<TextInput
-					label="Email Address"
-					description="This is your email address used in the application."
-					variant="filled"
-					readOnly
-					value={session.data?.user?.email ?? ''}
-				/>
-				<TextInput
-					label="Account Username"
-					description="This is your username used in the application."
-					variant="filled"
-					readOnly
-					value={session.data?.user?.name ?? ''}
-				/>
-			</form>
+		<div className="grid gap-5 grid-cols-1 md:grid-cols-2">
+			<div className="bg-secondary-800 rounded-md border-t-4 border-green-400">
+				<h2 className="py-2 px-5 bg-secondary-400">General</h2>
+				<div className="p-5 grid gap-5">
+					<TextInput
+						withAsterisk
+						label="Account ID"
+						description="This is your account ID used for identification."
+						variant="filled"
+						readOnly
+						value={session.data?.user?.id}
+					/>
+					<TextInput
+						withAsterisk
+						label="Email Address"
+						description="This is your email address used in the application."
+						variant="filled"
+						readOnly
+						value={session.data?.user?.email ?? ''}
+					/>
+					<TextInput
+						withAsterisk
+						label="Account Username"
+						description="This is your username used in the application."
+						variant="filled"
+						readOnly
+						value={session.data?.user?.name ?? ''}
+					/>
+				</div>
+			</div>
+			<div className="bg-secondary-800 rounded-md border-t-4 border-green-400">
+				<h2 className="py-2 px-5 bg-secondary-400">User Information</h2>
+				<div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+					<TextInput
+						withAsterisk
+						label="First Name"
+						description="Your first name."
+						variant="filled"
+						readOnly
+						value={profile.firstName}
+					/>
+					<TextInput
+						withAsterisk
+						label="Middle Name"
+						description="Your middle name."
+						variant="filled"
+						readOnly
+						value={profile.middleName}
+					/>
+					<TextInput
+						withAsterisk
+						label="Last Name"
+						description="Your last name."
+						variant="filled"
+						readOnly
+						value={profile.lastName}
+					/>
+					<Select
+						withAsterisk
+						label="Gender"
+						description="Your gender."
+						data={[
+							{ label: 'Male', value: 'Male' },
+							{ label: 'Female', value: 'Female' },
+						]}
+						readOnly
+						value={profile.gender}
+					/>
+					<DatePicker
+						withAsterisk
+						label="Birthdate"
+						description="Your birthdate."
+						readOnly
+						value={new Date(profile.birthdate)}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 }

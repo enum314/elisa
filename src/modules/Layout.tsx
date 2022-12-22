@@ -261,11 +261,11 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 																}
 																onClick={() =>
 																	router.push(
-																		'/settings',
+																		'/settings/general',
 																	)
 																}
 															>
-																Settings
+																Account Settings
 															</Menu.Item>
 
 															{session.data?.user

@@ -31,7 +31,7 @@ export function HandleTRPCError(options?: HandleMutationErrorOptions) {
 			case 'BAD_REQUEST': {
 				return showNotification({
 					color: 'red',
-					title: 'Error!',
+					title: 'Bad Request!',
 					icon: <IconAlertTriangle />,
 					message: ctx.message,
 				});

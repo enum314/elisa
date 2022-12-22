@@ -11,3 +11,5 @@ export enum Gender {
 	Male = 'Male',
 	Female = 'Female',
 }
+
+export const linkRegex = /^https?:\/\/\w+(\.\w+)*(:[0-9]+)?\/?(\/[.\w]*)*/;

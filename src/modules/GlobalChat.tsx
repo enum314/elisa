@@ -1,3 +1,4 @@
+import TextParser from '@components/TextParser';
 import { Avatar, ScrollArea, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { Inter } from '@next/font/google';
@@ -23,12 +24,14 @@ export function GlobalChat() {
 			content: '',
 		},
 		validate: zodResolver(
-			z.object({
-				content: z
-					.string()
-					.min(1, 'Message should not be empty')
-					.max(100),
-			}),
+			z
+				.object({
+					content: z
+						.string()
+						.min(1, 'Message should not be empty')
+						.max(100),
+				})
+				.strict(),
 		),
 	});
 
@@ -48,7 +51,11 @@ export function GlobalChat() {
 		},
 		onError: HandleTRPCError({
 			messages: [
-				['TOO_MANY_REQUESTS', 'Hey there, slow down sending messages!'],
+				['TOO_MANY_REQUESTS', 'Hey there. Slow down sending messages!'],
+				[
+					'FORBIDDEN',
+					'Hello there. It seems you have global chat turned off. You can turn it back on at Account Settings',
+				],
 			],
 		}),
 		onSettled() {
@@ -88,7 +95,7 @@ export function GlobalChat() {
 	});
 
 	return (
-		<div className="row-span-4 sm:col-span-1 md:col-span-2 bg-secondary-800 rounded-md border-t-4 border-cyan-400">
+		<div className="col-span-2 bg-secondary-800 rounded-md border-t-4 border-cyan-400">
 			<h2 className="py-2 px-5 bg-secondary-400">Global Chat</h2>
 			<ScrollArea style={{ height: 305 }} type="scroll">
 				<div className="p-5 grid gap-3" ref={scrollTargetRef}>
@@ -129,9 +136,9 @@ function GlobalMessageComponent({
 			<Avatar src={message.imageURL} alt={message.authorId} size={48} />
 			{message.type === 'join' ? (
 				<div className="ml-5 flex items-center">
-					<h3 className="text-xl flex items-center gap-x-2">
-						<span className="text-green-400">{message.author}</span>
-						<span className="text-base text-gray-400">
+					<h3 className="text-lg sm:text-xl text-green-400">
+						{message.author}{' '}
+						<span className="text-sm sm:text-base text-gray-400">
 							joined the chat
 						</span>
 					</h3>
@@ -139,9 +146,9 @@ function GlobalMessageComponent({
 			) : null}
 			{message.type === 'leave' ? (
 				<div className="ml-5 flex items-center">
-					<h3 className="text-xl flex items-center gap-x-2">
-						<span className="text-rose-400">{message.author}</span>
-						<span className="text-base text-gray-400">
+					<h3 className="text-lg sm:text-xl text-rose-400">
+						{message.author}{' '}
+						<span className="text-sm sm:text-base text-gray-400">
 							left the chat
 						</span>
 					</h3>
@@ -149,16 +156,16 @@ function GlobalMessageComponent({
 			) : null}
 			{message.type === 'message' ? (
 				<div className="ml-5">
-					<h3 className="text-lg flex items-center gap-x-2">
-						<span className="text-white-400">{message.author}</span>
-						<span className="text-xs text-gray-400">
+					<h3 className="text-base md:text-lg text-white">
+						{message.author}{' '}
+						<span className="text-xs text-gray-400 block sm:inline">
 							{RelativeFormat(message.createdAt)}
 						</span>
 					</h3>
 					<p
-						className={`text-base text-gray-300 ${roboto.className} select-text`}
+						className={`text-sm sm:text-base text-gray-300 ${roboto.className} select-text`}
 					>
-						{message.content}
+						<TextParser>{message.content}</TextParser>
 					</p>
 				</div>
 			) : null}

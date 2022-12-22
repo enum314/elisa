@@ -94,3 +94,7 @@ button:focus {
 body {
 	background-color: #101010;
 }
+
+a {
+	text-decoration: none;
+}

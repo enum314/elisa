@@ -32,25 +32,27 @@ export function SetupProfile() {
 			gender: null,
 		},
 		validate: zodResolver(
-			z.object({
-				firstName: z
-					.string()
-					.min(3, {
-						message:
-							'first name must contain at least 3 characters long',
-					})
-					.max(24),
-				middleName: z.string().min(0).max(24),
-				lastName: z
-					.string()
-					.min(3, {
-						message:
-							'last name must contain at least 3 characters long',
-					})
-					.max(24),
-				birthdate: z.date(),
-				gender: z.nativeEnum(Gender),
-			}),
+			z
+				.object({
+					firstName: z
+						.string()
+						.min(3, {
+							message:
+								'first name must contain at least 3 characters long',
+						})
+						.max(24),
+					middleName: z.string().min(0).max(24),
+					lastName: z
+						.string()
+						.min(3, {
+							message:
+								'last name must contain at least 3 characters long',
+						})
+						.max(24),
+					birthdate: z.date(),
+					gender: z.nativeEnum(Gender),
+				})
+				.strict(),
 		),
 	});
 
