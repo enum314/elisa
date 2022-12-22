@@ -1,30 +1,15 @@
-import { websocket } from '@server/common/websocket';
-import { authProcedure, router } from '@server/trpc';
-import { observable } from '@trpc/server/observable';
+import { router } from '@server/trpc';
 
+import { messageRouter } from './message';
 import { profileRouter } from './profile';
 import { siteRouter } from './site';
-
-const interval = setInterval(() => {
-	websocket.emit('test', {
-		test: Math.floor(Math.random() * 100).toString(),
-	});
-}, 10000);
-
-process.on('SIGTERM', () => clearInterval(interval));
+import { wsRouter } from './ws';
 
 export const appRouter = router({
-	test: authProcedure.subscription(() => {
-		return observable<{ test: string }>((observer) => {
-			const test = (data: { test: string }) => observer.next(data);
-			websocket.on('test', test);
-			return () => {
-				websocket.off('test', test);
-			};
-		});
-	}),
 	site: siteRouter,
 	profile: profileRouter,
+	message: messageRouter,
+	ws: wsRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -6,7 +6,7 @@ interface HandleMutationSuccessOptions {
 	message?: string;
 }
 
-export function HandleMutationSuccess(options?: HandleMutationSuccessOptions) {
+export function HandleTRPCSuccess(options?: HandleMutationSuccessOptions) {
 	return async () => {
 		if (options) {
 			showNotification({

@@ -12,7 +12,7 @@ export const profileRouter = router({
 			},
 		});
 
-		return { profile };
+		return profile ?? null;
 	}),
 	setup: authProcedure
 		.use(ratelimit('profile.setup', { points: 1, duration: 300 }))

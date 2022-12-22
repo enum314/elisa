@@ -2,20 +2,13 @@ import Loading from '@components/Loading';
 import { Select, TextInput } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { ProfileEdit } from '@modules/settings/ProfileEdit';
-import { SetupProfile } from '@modules/settings/SetupProfile';
 import { trpc } from '@utils/trpc';
-import { useMemo } from 'react';
 
 export function ProfileTab() {
-	const { data, isLoading } = trpc.profile.self.useQuery();
-	const profile = useMemo(() => data?.profile, [data]);
+	const { data: profile, isLoading } = trpc.profile.self.useQuery();
 
-	if (isLoading) {
+	if (isLoading || !profile) {
 		return <Loading className="mt-52" />;
-	}
-
-	if (!profile) {
-		return <SetupProfile />;
 	}
 
 	return (

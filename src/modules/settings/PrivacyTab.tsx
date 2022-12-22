@@ -1,28 +1,26 @@
 import Loading from '@components/Loading';
 import { Switch } from '@mantine/core';
 import { useShallowEffect } from '@mantine/hooks';
-import { HandleMutationError } from '@modules/HandleMutationError';
-import { HandleMutationSuccess } from '@modules/HandleMutationSuccess';
-import { SetupProfile } from '@modules/settings/SetupProfile';
+import { HandleTRPCError } from '@modules/common/HandleTRPCError';
+import { HandleTRPCSuccess } from '@modules/common/HandleTRPCSuccess';
 import { trpc } from '@utils/trpc';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 export function PrivacyTab() {
 	const utils = trpc.useContext();
-	const { data, isLoading } = trpc.profile.self.useQuery();
-	const profile = useMemo(() => data?.profile, [data]);
+	const { data: profile, isLoading } = trpc.profile.self.useQuery();
 
 	const [allowFriendships, setAllowFriendships] = useState(true);
 	const [allowChatRequests, setAllowChatRequests] = useState(true);
 
 	const mutation = trpc.profile.editPrivacy.useMutation({
-		onSuccess: HandleMutationSuccess({
+		onSuccess: HandleTRPCSuccess({
 			callback() {
 				utils.profile.self.invalidate();
 			},
 			message: 'Your privacy settings has been updated!',
 		}),
-		onError: HandleMutationError(),
+		onError: HandleTRPCError(),
 	});
 
 	useShallowEffect(() => {
@@ -34,10 +32,6 @@ export function PrivacyTab() {
 
 	if (isLoading) {
 		return <Loading className="mt-52" />;
-	}
-
-	if (!profile) {
-		return <SetupProfile />;
 	}
 
 	return (
