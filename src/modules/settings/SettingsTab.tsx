@@ -1,3 +1,4 @@
+import { Card } from '@components/Card';
 import { Button, Select } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { HandleTRPCError } from '@modules/common/HandleTRPCError';
@@ -39,8 +40,7 @@ export function SettingsTab() {
 
 	return (
 		<div className="grid gap-5 grid-cols-1 md:grid-cols-2">
-			<div className="bg-secondary-800 rounded-md border-t-4 border-red-400">
-				<h2 className="py-2 px-5 bg-secondary-400">Chat Settings</h2>
+			<Card title="Chat Settings" className="border-red-400">
 				<form
 					className="p-5"
 					onSubmit={form.onSubmit((values) =>
@@ -108,9 +108,8 @@ export function SettingsTab() {
 						</Button>
 					</div>
 				</form>
-			</div>
-			<div className="bg-secondary-800 rounded-md border-t-4 border-red-400">
-				<h2 className="py-2 px-5 bg-secondary-400">Privacy Settings</h2>
+			</Card>
+			<Card title="Privacy Settings" className="border-red-400">
 				<form
 					className="p-5"
 					onSubmit={form.onSubmit((values) =>
@@ -157,7 +156,7 @@ export function SettingsTab() {
 						</Button>
 					</div>
 				</form>
-			</div>
+			</Card>
 		</div>
 	);
 }

@@ -1,3 +1,4 @@
+import { Card } from '@components/Card';
 import TextParser from '@components/TextParser';
 import { Avatar, ScrollArea, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
@@ -92,34 +93,35 @@ export function GlobalChat() {
 	});
 
 	return (
-		<div className="col-span-2 bg-secondary-800 rounded-md border-t-4 border-cyan-400">
-			<h2 className="py-2 px-5 bg-secondary-400">Global Chat</h2>
-			<ScrollArea style={{ height: 305 }} type="scroll">
-				<div className="p-5 grid gap-3" ref={scrollTargetRef}>
-					{messages.map((message) => (
-						<GlobalMessageComponent
-							key={message.id + message.authorId}
-							message={message}
-						/>
-					))}
-				</div>
-			</ScrollArea>
-			<form
-				onSubmit={form.onSubmit((values) => {
-					if (!loading) {
-						sender.mutate(values);
-					}
-				})}
-				className="p-5 border-t border-gray-600"
-			>
-				<TextInput
-					placeholder="Type a message..."
-					autoComplete="off"
-					maxLength={100}
-					{...form.getInputProps('content')}
-				/>
-			</form>
-		</div>
+		<>
+			<Card title="Global Chat" className="col-span-2 border-cyan-400">
+				<ScrollArea style={{ height: 305 }} type="scroll">
+					<div className="p-5 grid gap-3" ref={scrollTargetRef}>
+						{messages.map((message) => (
+							<GlobalMessageComponent
+								key={message.id + message.authorId}
+								message={message}
+							/>
+						))}
+					</div>
+				</ScrollArea>
+				<form
+					onSubmit={form.onSubmit((values) => {
+						if (!loading) {
+							sender.mutate(values);
+						}
+					})}
+					className="p-5 border-t border-gray-600"
+				>
+					<TextInput
+						placeholder="Type a message..."
+						autoComplete="off"
+						maxLength={100}
+						{...form.getInputProps('content')}
+					/>
+				</form>
+			</Card>
+		</>
 	);
 }
 
@@ -133,9 +135,9 @@ function GlobalMessageComponent({
 			<Avatar src={message.imageURL} alt={message.authorId} size={48} />
 			{message.type === 'join' ? (
 				<div className="ml-5 flex items-center">
-					<h3 className="text-lg sm:text-xl text-green-400">
+					<h3 className="text-lg sm:text-xl text-green-400 select-text">
 						{message.author}{' '}
-						<span className="text-sm sm:text-base text-gray-400">
+						<span className="text-sm sm:text-base text-gray-400 select-none">
 							joined the chat
 						</span>
 					</h3>
@@ -143,9 +145,9 @@ function GlobalMessageComponent({
 			) : null}
 			{message.type === 'leave' ? (
 				<div className="ml-5 flex items-center">
-					<h3 className="text-lg sm:text-xl text-rose-400">
+					<h3 className="text-lg sm:text-xl text-rose-400 select-text">
 						{message.author}{' '}
-						<span className="text-sm sm:text-base text-gray-400">
+						<span className="text-sm sm:text-base text-gray-400 select-none">
 							left the chat
 						</span>
 					</h3>
@@ -153,9 +155,9 @@ function GlobalMessageComponent({
 			) : null}
 			{message.type === 'message' ? (
 				<div className="ml-5">
-					<h3 className="text-base md:text-lg text-white">
+					<h3 className="text-base md:text-lg text-white select-text">
 						{message.author}{' '}
-						<span className="text-xs text-gray-400 block sm:inline">
+						<span className="text-xs text-gray-400 block sm:inline select-none">
 							{RelativeFormat(message.createdAt)}
 						</span>
 					</h3>

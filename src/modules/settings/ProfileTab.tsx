@@ -1,3 +1,4 @@
+import { Card } from '@components/Card';
 import { Button, Textarea, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { HandleTRPCError } from '@modules/common/HandleTRPCError';
@@ -36,10 +37,7 @@ export function ProfileTab() {
 
 	return (
 		<div className="grid gap-5 grid-cols-1 md:grid-cols-2">
-			<div className="bg-secondary-800 rounded-md border-t-4 border-yellow-400">
-				<h2 className="py-2 px-5 bg-secondary-600">
-					Basic Information
-				</h2>
+			<Card title="Basic Information" className="border-yellow-400">
 				<form
 					className="p-5"
 					onSubmit={form.onSubmit((values) =>
@@ -81,7 +79,7 @@ export function ProfileTab() {
 						</Button>
 					</div>
 				</form>
-			</div>
+			</Card>
 		</div>
 	);
 }

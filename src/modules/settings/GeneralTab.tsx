@@ -1,3 +1,4 @@
+import { Card } from '@components/Card';
 import Loading from '@components/Loading';
 import { Select, TextInput } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
@@ -15,8 +16,7 @@ export function GeneralTab() {
 
 	return (
 		<div className="grid gap-5 grid-cols-1 md:grid-cols-2">
-			<div className="bg-secondary-800 rounded-md border-t-4 border-green-400">
-				<h2 className="py-2 px-5 bg-secondary-400">General</h2>
+			<Card title="General" className="border-green-400">
 				<div className="p-5 grid gap-5">
 					<TextInput
 						withAsterisk
@@ -43,9 +43,8 @@ export function GeneralTab() {
 						value={session.data?.user?.name ?? ''}
 					/>
 				</div>
-			</div>
-			<div className="bg-secondary-800 rounded-md border-t-4 border-green-400">
-				<h2 className="py-2 px-5 bg-secondary-400">User Information</h2>
+			</Card>
+			<Card title="User Information" className="border-green-400">
 				<div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
 					<TextInput
 						withAsterisk
@@ -90,7 +89,7 @@ export function GeneralTab() {
 						value={new Date(profile.birthdate)}
 					/>
 				</div>
-			</div>
+			</Card>
 		</div>
 	);
 }

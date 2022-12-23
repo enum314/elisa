@@ -69,7 +69,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 							styles: {
 								input: {
 									'&:focus': {
-										borderColor: '#08090C',
+										borderColor: '#595758',
 									},
 								},
 							},
@@ -85,7 +85,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 							{profile && !isLoading ? (
 								<AppShell
 									classNames={{
-										root: `text-white`,
+										root: `text-white select-none`,
 										main: 'bg-secondary-700',
 									}}
 									navbar={
@@ -177,7 +177,6 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 														closeDelay={400}
 														shadow="lg"
 														withArrow
-														width={200}
 													>
 														<Menu.Target>
 															<UnstyledButton className="bg-secondary-700 flex items-center sm:px-3 sm:py-2 rounded-md gap-x-2">
