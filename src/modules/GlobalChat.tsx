@@ -1,7 +1,6 @@
 import TextParser from '@components/TextParser';
 import { Avatar, ScrollArea, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { Inter } from '@next/font/google';
 import type { WebSocketEvents } from '@server/common/websocket';
 import { RelativeFormat } from '@utils/RelativeFormat';
 import { trpc } from '@utils/trpc';
@@ -9,8 +8,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 
 import { HandleTRPCError } from './common/HandleTRPCError';
-
-const roboto = Inter({ weight: '400', subsets: ['latin'] });
 
 export function GlobalChat() {
 	const scrollTargetRef = useRef<HTMLDivElement>(null);
@@ -162,9 +159,7 @@ function GlobalMessageComponent({
 							{RelativeFormat(message.createdAt)}
 						</span>
 					</h3>
-					<p
-						className={`text-sm sm:text-base text-gray-300 ${roboto.className} select-text`}
-					>
+					<p className="text-sm sm:text-base text-gray-300 select-text">
 						<TextParser>{message.content}</TextParser>
 					</p>
 				</div>

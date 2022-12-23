@@ -16,7 +16,6 @@ import {
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
-import { Roboto } from '@next/font/google';
 import {
 	IconLayoutDashboard,
 	IconMessageCircle,
@@ -36,8 +35,6 @@ interface LayoutProps {
 	links: Record<string, MainLinkProps[]>;
 	children?: React.ReactNode;
 }
-
-const roboto = Roboto({ weight: '400', subsets: ['latin'] });
 
 const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 	const router = useRouter();
@@ -66,6 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 						lg: 1024,
 						xl: 1280,
 					},
+					fontFamily: `var(--primary-font);`,
 					components: {
 						Input: {
 							styles: {
@@ -87,7 +85,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 							{profile && !isLoading ? (
 								<AppShell
 									classNames={{
-										root: `text-white ${roboto.className}`,
+										root: `text-white`,
 										main: 'bg-secondary-700',
 									}}
 									navbar={
@@ -309,7 +307,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 							) : null}
 							{!profile && !isLoading ? (
 								<div
-									className={`text-white p-5 sm:p-10 md:p-20 lg:p-40 ${roboto.className} bg-secondary-700`}
+									className={`text-white p-5 sm:p-10 md:p-20 lg:p-40 bg-secondary-700`}
 								>
 									<SetupProfile />
 								</div>
