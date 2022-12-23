@@ -47,15 +47,7 @@ export function GlobalChat() {
 		onSuccess() {
 			form.reset();
 		},
-		onError: HandleTRPCError({
-			messages: [
-				['TOO_MANY_REQUESTS', 'Hey there. Slow down sending messages!'],
-				[
-					'FORBIDDEN',
-					'Hello there. It seems you have global chat turned off. You can turn it back on at Account Settings',
-				],
-			],
-		}),
+		onError: HandleTRPCError(),
 		onSettled() {
 			setLoading(false);
 		},

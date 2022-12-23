@@ -11,6 +11,7 @@ import { middleware } from '../trpc';
 interface RateLimitOptions {
 	points: number;
 	duration: number;
+	message?: string;
 }
 
 async function consume(
@@ -53,6 +54,9 @@ export const ratelimit = (key: string, opts: RateLimitOptions) =>
 				if (status.rateLimited) {
 					throw new TRPCError({
 						code: 'TOO_MANY_REQUESTS',
+						message: opts.message
+							? opts.message
+							: 'You are being rate limited.',
 					});
 				}
 
