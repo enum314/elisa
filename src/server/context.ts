@@ -52,6 +52,7 @@ export const createContextInner = async (opts: CreateContextOptions) => {
 
 	return {
 		prisma,
+		redis,
 		siteSettings: verified,
 		filter,
 		...opts,
