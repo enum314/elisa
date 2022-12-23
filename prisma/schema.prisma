@@ -99,4 +99,7 @@ model SiteSettings {
 
     filteredWords    String[] @default([])
     whitelistedWords String[] @default([])
+
+    globalChat               Boolean @default(true)
+    globalChatBlockProfanity Boolean @default(false)
 }
