@@ -8,11 +8,11 @@ import { NextSeo } from 'next-seo';
 export const getServerSideProps = createGetServerSideProps('guestOnly');
 
 export default function Login() {
-	const { data: site } = trpc.site.companyName.useQuery();
+	const { data: companyName } = trpc.site.companyName.useQuery();
 
 	return (
 		<>
-			<NextSeo title={`Login to ${site?.companyName ?? 'Elisa LMS'}`} />
+			<NextSeo title={`Login to ${companyName ?? 'Elisa LMS'}`} />
 			<div className="select-none grid place-items-center h-full w-full bg-gradient-to-br from-accent to-primary font-sans">
 				<div className="w-full grid place-items-center gap-y-5 -mt-10">
 					<h1 className="text-3xl text-white">Login to Continue</h1>

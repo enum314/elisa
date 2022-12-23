@@ -1,62 +1,85 @@
-import Loading from '@components/Loading';
-import { Select, TextInput } from '@mantine/core';
-import { DatePicker } from '@mantine/dates';
-import { ProfileEdit } from '@modules/settings/ProfileEdit';
+import { Card } from '@components/Card';
+import { Button, Textarea, TextInput } from '@mantine/core';
+import { useForm, zodResolver } from '@mantine/form';
+import { HandleTRPCError } from '@modules/common/HandleTRPCError';
+import { HandleTRPCSuccess } from '@modules/common/HandleTRPCSuccess';
+import { IconDeviceFloppy } from '@tabler/icons';
 import { trpc } from '@utils/trpc';
+import { z } from 'zod';
 
 export function ProfileTab() {
-	const { data: profile, isLoading } = trpc.profile.self.useQuery();
+	const utils = trpc.useContext();
+	const { data: profile } = trpc.profile.self.useQuery();
 
-	if (isLoading || !profile) {
-		return <Loading className="mt-52" />;
-	}
+	const form = useForm({
+		initialValues: {
+			biography: profile?.biography ?? '',
+			nickname: profile?.nickname ?? '',
+		},
+		validate: zodResolver(
+			z
+				.object({
+					biography: z.string().max(196),
+					nickname: z.string().max(16),
+				})
+				.strict(),
+		),
+	});
+
+	const mutation = trpc.profile.editMain.useMutation({
+		onSuccess: HandleTRPCSuccess({
+			callback() {
+				utils.profile.self.invalidate();
+			},
+		}),
+		onError: HandleTRPCError(),
+	});
 
 	return (
-		<div className="grid gap-y-5">
-			<div className="bg-secondary-800 rounded-md border-t-4 border-blue-400">
-				<h2 className="py-2 px-5 bg-secondary-400">Profile</h2>
-				<div className="p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-					<TextInput
-						label="First Name"
-						variant="filled"
-						readOnly
-						value={profile.firstName}
-					/>
-					{profile?.middleName.length ? (
-						<TextInput
-							label="Middle Name"
-							variant="filled"
-							readOnly
-							value={profile.middleName}
+		<div className="grid gap-5 grid-cols-1 md:grid-cols-2">
+			<Card title="Basic Information" className="border-yellow-400">
+				<form
+					className="p-5"
+					onSubmit={form.onSubmit((values) =>
+						mutation.mutate(values),
+					)}
+				>
+					<div className="grid gap-5">
+						<Textarea
+							withAsterisk
+							label="Biography"
+							description="Tell us something great to describe yourself."
+							placeholder="Write something..."
+							maxLength={196}
+							{...form.getInputProps('biography')}
 						/>
-					) : null}
-					<TextInput
-						label="Last Name"
-						variant="filled"
-						readOnly
-						value={profile.lastName}
-					/>
-					<Select
-						withAsterisk
-						label="Gender"
-						placeholder="Your gender"
-						data={[
-							{ label: 'Male', value: 'Male' },
-							{ label: 'Female', value: 'Female' },
-						]}
-						readOnly
-						value={profile.gender}
-					/>
-					<DatePicker
-						withAsterisk
-						placeholder="Your birthdate"
-						label="Birthdate"
-						readOnly
-						value={new Date(profile.birthdate)}
-					/>
-				</div>
-			</div>
-			<ProfileEdit />
+						<TextInput
+							withAsterisk
+							label="Nickname"
+							description="What should we call you?"
+							placeholder="Write something..."
+							maxLength={16}
+							autoComplete="off"
+							{...form.getInputProps('nickname')}
+						/>
+					</div>
+					<div className="pt-5 grid md:place-items-end">
+						<Button
+							color="green"
+							className="font-normal"
+							disabled={
+								form.values.biography === profile?.biography &&
+								form.values.nickname === profile?.nickname
+							}
+							loading={mutation.isLoading}
+							leftIcon={<IconDeviceFloppy />}
+							type="submit"
+						>
+							Save
+						</Button>
+					</div>
+				</form>
+			</Card>
 		</div>
 	);
 }

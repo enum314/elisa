@@ -79,6 +79,8 @@ model Profile {
 
     allowFriendships  Boolean @default(true)
     allowChatRequests Boolean @default(true)
+
+    globalChat Boolean @default(true)
 }
 
 model Role {
@@ -94,4 +96,7 @@ model SiteSettings {
     id String @id @unique
 
     companyName String @default("Elisa LMS")
+
+    filteredWords    String[] @default([])
+    whitelistedWords String[] @default([])
 }

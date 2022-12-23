@@ -1,4 +1,5 @@
 import { ratelimit } from '@server/middlewares/ratelimit';
+import { withProfile } from '@server/middlewares/withProfile';
 import { authProcedure, router } from '@server/trpc';
 import { TRPCError } from '@trpc/server';
 import { Gender } from '@utils/Constants';
@@ -49,11 +50,12 @@ export const profileRouter = router({
 		}),
 	editMain: authProcedure
 		.use(ratelimit('profile.edit', { points: 10, duration: 60 }))
+		.use(withProfile)
 		.input(
 			z
 				.object({
-					biography: z.string().max(196).optional(),
-					nickname: z.string().max(16).optional(),
+					biography: z.string().max(196),
+					nickname: z.string().max(16),
 				})
 				.strict(),
 		)
@@ -72,11 +74,13 @@ export const profileRouter = router({
 		}),
 	editPrivacy: authProcedure
 		.use(ratelimit('profile.edit', { points: 10, duration: 60 }))
+		.use(withProfile)
 		.input(
 			z
 				.object({
 					allowFriendships: z.boolean().optional(),
 					allowChatRequests: z.boolean().optional(),
+					globalChat: z.boolean().optional(),
 				})
 				.strict(),
 		)
