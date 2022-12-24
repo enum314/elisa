@@ -109,7 +109,6 @@ export function SettingsTab() {
 				>
 					<Button
 						color="green"
-						className="font-normal"
 						loading={mutation.isLoading}
 						leftIcon={<IconDeviceFloppy />}
 						type="submit"
@@ -164,7 +163,6 @@ export function SettingsTab() {
 				>
 					<Button
 						color="green"
-						className="font-normal"
 						loading={mutation.isLoading}
 						leftIcon={<IconDeviceFloppy />}
 						type="submit"
