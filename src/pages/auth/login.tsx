@@ -13,7 +13,7 @@ export default function Login() {
 	return (
 		<>
 			<NextSeo
-				title={`Login to ${siteSettings.companyName ?? 'Elisa LMS'}`}
+				title={`Login to ${siteSettings?.companyName ?? 'Elisa LMS'}`}
 			/>
 			<div className="select-none grid place-items-center h-full w-full bg-gradient-to-br from-accent to-primary font-sans">
 				<div className="w-full grid place-items-center gap-y-5 -mt-10">
