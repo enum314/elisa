@@ -148,7 +148,7 @@ export function GlobalChatSettings() {
 						data={form.values.filteredWords}
 						label="Filtered Words"
 						description="Words to be filtered in global chat."
-						placeholder="Add word"
+						placeholder="Add a word"
 						autoComplete="off"
 						creatable
 						searchable
@@ -224,7 +224,7 @@ export function GlobalChatSettings() {
 						data={form.values.whitelistedWords}
 						label="Whitelisted Words"
 						description="Blocked words to be whitelisted in global chat."
-						placeholder="Add word"
+						placeholder="Add a word"
 						autoComplete="off"
 						creatable
 						searchable
