@@ -36,48 +36,48 @@ export function ProfileTab() {
 	});
 
 	return (
-		<div className="grid gap-5 grid-cols-1 md:grid-cols-2">
+		<div className="grid gap-5 grid-cols-1 lg:grid-cols-2">
 			<Card title="Basic Information" className="border-yellow-400">
+				<div className="grid gap-5">
+					<Textarea
+						withAsterisk
+						label="Biography"
+						description="Tell us something great to describe yourself."
+						placeholder="Write something..."
+						maxLength={196}
+						{...form.getInputProps('biography')}
+					/>
+					<TextInput
+						withAsterisk
+						label="Nickname"
+						description="What should we call you?"
+						placeholder="Write something..."
+						maxLength={16}
+						autoComplete="off"
+						{...form.getInputProps('nickname')}
+					/>
+				</div>
 				<form
-					className="p-5"
-					onSubmit={form.onSubmit((values) =>
-						mutation.mutate(values),
-					)}
+					className="grid place-items-end mt-5 md:mt-10"
+					onSubmit={form.onSubmit((values) => {
+						if (
+							values.biography.trim() === profile?.biography &&
+							values.nickname.trim() === profile?.nickname
+						) {
+							return;
+						}
+
+						mutation.mutate(values);
+					})}
 				>
-					<div className="grid gap-5">
-						<Textarea
-							withAsterisk
-							label="Biography"
-							description="Tell us something great to describe yourself."
-							placeholder="Write something..."
-							maxLength={196}
-							{...form.getInputProps('biography')}
-						/>
-						<TextInput
-							withAsterisk
-							label="Nickname"
-							description="What should we call you?"
-							placeholder="Write something..."
-							maxLength={16}
-							autoComplete="off"
-							{...form.getInputProps('nickname')}
-						/>
-					</div>
-					<div className="pt-5 grid md:place-items-end">
-						<Button
-							color="green"
-							className="font-normal"
-							disabled={
-								form.values.biography === profile?.biography &&
-								form.values.nickname === profile?.nickname
-							}
-							loading={mutation.isLoading}
-							leftIcon={<IconDeviceFloppy />}
-							type="submit"
-						>
-							Save
-						</Button>
-					</div>
+					<Button
+						color="green"
+						loading={mutation.isLoading}
+						leftIcon={<IconDeviceFloppy />}
+						type="submit"
+					>
+						Save
+					</Button>
 				</form>
 			</Card>
 		</div>

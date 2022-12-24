@@ -8,7 +8,7 @@ import { trpc } from '@utils/trpc';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 
-import { HandleTRPCError } from './common/HandleTRPCError';
+import { HandleTRPCError } from '../common/HandleTRPCError';
 
 export function GlobalChat() {
 	const scrollTargetRef = useRef<HTMLDivElement>(null);
@@ -86,9 +86,13 @@ export function GlobalChat() {
 
 	return (
 		<>
-			<Card title="Global Chat" className="col-span-2 border-cyan-400">
+			<Card
+				title="Global Chat"
+				className="col-span-2 border-cyan-400"
+				noPadding
+			>
 				<ScrollArea style={{ height: 305 }} type="scroll">
-					<div className="p-5 grid gap-3" ref={scrollTargetRef}>
+					<div className="grid gap-2 pt-2 px-2" ref={scrollTargetRef}>
 						{messages.map((message) => (
 							<GlobalMessageComponent
 								key={message.id + message.authorId}
@@ -103,7 +107,7 @@ export function GlobalChat() {
 							sender.mutate(values);
 						}
 					})}
-					className="p-5 border-t border-gray-600"
+					className="p-5 mt-2 border-t border-gray-600"
 				>
 					<TextInput
 						placeholder="Type a message..."

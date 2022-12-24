@@ -1,10 +1,11 @@
+import { PageTitle } from '@components/PageTitle';
 import { Tabs } from '@mantine/core';
 import Layout from '@modules/Layout';
-import { GeneralTab } from '@modules/settings/GeneralTab';
-import { ProfileTab } from '@modules/settings/ProfileTab';
-import { SettingsTab } from '@modules/settings/SettingsTab';
+import { DashboardLinks } from '@modules/LayoutLinks';
+import { GeneralTab } from '@modules/subpages/settings/GeneralTab';
+import { ProfileTab } from '@modules/subpages/settings/ProfileTab';
+import { SettingsTab } from '@modules/subpages/settings/SettingsTab';
 import { createGetServerSideProps } from '@server/common/createGetServerSideProps';
-import { DashboardLinks } from '@utils/DashboardLinks';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 
@@ -18,9 +19,7 @@ export default function SettingsPage() {
 			<NextSeo title="Account Settings" />
 
 			<div className="grid gap-y-5">
-				<h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl">
-					Account Settings
-				</h1>
+				<PageTitle>Account Settings</PageTitle>
 				<Tabs
 					value={router.query.activeTab as string}
 					onTabChange={(value) => router.push(`/settings/${value}`)}

@@ -21,20 +21,21 @@ const { publicRuntimeConfig } = getConfig() as {
 
 const { APP_URL, WS_URL } = publicRuntimeConfig as RuntimeConfig;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getEndingLink(ctx: NextPageContext | undefined) {
 	if (typeof window === 'undefined') {
 		return httpBatchLink({
 			url: `${APP_URL}/api/trpc`,
-			headers() {
-				if (ctx?.req) {
-					// on ssr, forward client's headers to the server
-					return {
-						...ctx.req.headers,
-						'x-ssr': '1',
-					};
-				}
-				return {};
-			},
+			// headers() {
+			// 	if (ctx?.req) {
+			// 		// on ssr, forward client's headers to the server
+			// 		return {
+			// 			...ctx.req.headers,
+			// 			'x-ssr': '1',
+			// 		};
+			// 	}
+			// 	return {};
+			// },
 		});
 	}
 
