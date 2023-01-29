@@ -8,6 +8,8 @@ import type { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import ws from 'ws';
 
+import { storage } from './storage';
+
 type CreateContextOptions = {
 	session: Session | null;
 };
@@ -21,6 +23,7 @@ export const createContextInner = async (opts: CreateContextOptions) => {
 	return {
 		prisma,
 		redis,
+		storage,
 		...opts,
 	};
 };
@@ -30,7 +33,7 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  **/
 export const createContext = async (
-	opts:
+	opts?:
 		| CreateNextContextOptions
 		| NodeHTTPCreateContextFnOptions<IncomingMessage, ws>,
 ) => {

@@ -68,6 +68,10 @@ model Profile {
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String @unique
 
+    verified Boolean @default(false)
+
+    avatar String @default("")
+
     firstName  String
     middleName String   @default("")
     lastName   String

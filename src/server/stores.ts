@@ -10,3 +10,8 @@ export interface OnlineUser {
 }
 
 export const onlineUsers = new Map<string, OnlineUser>();
+
+export const avatarUrls = new Store<{ value: string }>(
+	`${SiteSettingId}|avatars`,
+	60,
+);

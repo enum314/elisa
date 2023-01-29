@@ -45,6 +45,9 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 
 	const { data: siteSettings } = trpc.site.get.useQuery();
 	const { data: profile, isLoading } = trpc.profile.self.useQuery();
+	const { data: avatar } = trpc.avatar.get.useQuery({
+		userId: session.data?.user?.id ?? 'null',
+	});
 
 	return (
 		<>
@@ -184,10 +187,7 @@ const Layout: React.FC<LayoutProps> = ({ links, children }) => {
 															<UnstyledButton className="bg-secondary-700 flex items-center sm:px-3 sm:py-2 rounded-md gap-x-2">
 																<Avatar
 																	src={
-																		session
-																			.data
-																			?.user
-																			?.image
+																		avatar?.url
 																	}
 																	alt="your avatar"
 																/>

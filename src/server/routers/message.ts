@@ -70,7 +70,6 @@ export const messageRouter = router({
 				author: `${ctx.profile.firstName} ${ctx.profile.lastName}`,
 				authorId: ctx.session.user.id,
 				content: filter.clean(content),
-				imageURL: ctx.session.user.image ?? '',
 				createdAt: now,
 				type: 'message',
 			});
@@ -89,7 +88,6 @@ export const messageRouter = router({
 					author: `${ctx.profile.firstName} ${ctx.profile.lastName}`,
 					authorId: ctx.session.user.id,
 					content: '',
-					imageURL: ctx.session.user.image ?? '',
 					createdAt: now,
 					type: 'join',
 				});
@@ -105,7 +103,6 @@ export const messageRouter = router({
 						author: `${ctx.profile.firstName} ${ctx.profile.lastName}`,
 						authorId: ctx.session.user.id,
 						content: '',
-						imageURL: ctx.session.user.image ?? '',
 						createdAt: then,
 						type: 'leave',
 					});

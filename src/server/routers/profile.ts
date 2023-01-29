@@ -41,13 +41,16 @@ export const profileRouter = router({
 
 			await ctx.prisma.profile.create({
 				data: {
-					userId: ctx.session.user.id,
 					...input,
+					userId: ctx.session.user.id,
+					firstName: input.firstName.trim(),
+					middleName: input.middleName.trim(),
+					lastName: input.lastName.trim(),
 				},
 			});
 		}),
 	editMain: authProcedure
-		.use(ratelimit('profile.edit', { points: 10, duration: 60 }))
+		.use(ratelimit('profile.editMain', { points: 10, duration: 60 }))
 		.use(withProfile)
 		.input(
 			z
@@ -69,7 +72,7 @@ export const profileRouter = router({
 			});
 		}),
 	editPrivacy: authProcedure
-		.use(ratelimit('profile.edit', { points: 10, duration: 60 }))
+		.use(ratelimit('profile.editPrivacy', { points: 10, duration: 60 }))
 		.use(withProfile)
 		.input(
 			z

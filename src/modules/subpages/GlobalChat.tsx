@@ -126,9 +126,13 @@ function GlobalMessageComponent({
 }: {
 	message: WebSocketEvents['message'][0];
 }): JSX.Element {
+	const { data: avatar } = trpc.avatar.get.useQuery({
+		userId: message.authorId,
+	});
+
 	return (
 		<div className="flex select-none">
-			<Avatar src={message.imageURL} alt={message.authorId} size={48} />
+			<Avatar src={avatar?.url} alt={message.authorId} size={48} />
 			{message.type === 'join' ? (
 				<div className="ml-5 flex items-center">
 					<h3 className="text-lg sm:text-xl text-green-400 select-text">
