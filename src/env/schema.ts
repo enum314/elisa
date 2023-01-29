@@ -23,6 +23,10 @@ export const serverSchema = z.object({
 	DISCORD_CLIENT_SECRET: z.string(),
 	APP_URL: z.string().url(),
 	WS_URL: z.string().url(),
+	STORAGE_ACCESS_KEY: z.string(),
+	STORAGE_SECRET_KEY: z.string(),
+	STORAGE_ENDPOINT: z.string().url(),
+	STORAGE_REGION: z.string(),
 });
 
 /**

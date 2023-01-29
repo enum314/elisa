@@ -39,17 +39,18 @@ export const profileRouter = router({
 				throw new TRPCError({ code: 'CONFLICT' });
 			}
 
-			const data = await ctx.prisma.profile.create({
+			await ctx.prisma.profile.create({
 				data: {
-					userId: ctx.session.user.id,
 					...input,
+					userId: ctx.session.user.id,
+					firstName: input.firstName.trim(),
+					middleName: input.middleName.trim(),
+					lastName: input.lastName.trim(),
 				},
 			});
-
-			return data;
 		}),
 	editMain: authProcedure
-		.use(ratelimit('profile.edit', { points: 10, duration: 60 }))
+		.use(ratelimit('profile.editMain', { points: 10, duration: 60 }))
 		.use(withProfile)
 		.input(
 			z
@@ -60,7 +61,7 @@ export const profileRouter = router({
 				.strict(),
 		)
 		.mutation(async ({ input, ctx }) => {
-			const data = await ctx.prisma.profile.update({
+			await ctx.prisma.profile.update({
 				where: {
 					userId: ctx.session.user.id,
 				},
@@ -69,11 +70,9 @@ export const profileRouter = router({
 					nickname: input.nickname?.trim(),
 				},
 			});
-
-			return data;
 		}),
 	editPrivacy: authProcedure
-		.use(ratelimit('profile.edit', { points: 10, duration: 60 }))
+		.use(ratelimit('profile.editPrivacy', { points: 10, duration: 60 }))
 		.use(withProfile)
 		.input(
 			z
@@ -85,13 +84,11 @@ export const profileRouter = router({
 				.strict(),
 		)
 		.mutation(async ({ input, ctx }) => {
-			const data = await ctx.prisma.profile.update({
+			await ctx.prisma.profile.update({
 				where: {
 					userId: ctx.session.user.id,
 				},
 				data: input,
 			});
-
-			return data;
 		}),
 });

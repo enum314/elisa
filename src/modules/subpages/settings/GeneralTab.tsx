@@ -15,9 +15,9 @@ export function GeneralTab() {
 	}
 
 	return (
-		<div className="grid gap-5 grid-cols-1 md:grid-cols-2">
+		<div className="grid gap-5 grid-cols-1 lg:grid-cols-2">
 			<Card title="General" className="border-green-400">
-				<div className="p-5 grid gap-5">
+				<div className="grid gap-5">
 					<TextInput
 						withAsterisk
 						label="Account ID"
@@ -45,7 +45,7 @@ export function GeneralTab() {
 				</div>
 			</Card>
 			<Card title="User Information" className="border-green-400">
-				<div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 					<TextInput
 						withAsterisk
 						label="First Name"

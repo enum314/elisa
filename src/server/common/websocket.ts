@@ -8,7 +8,6 @@ export interface WebSocketEvents {
 			author: string;
 			authorId: string;
 			content: string;
-			imageURL: string;
 			createdAt: Date;
 			type: 'message' | 'join' | 'leave';
 		},

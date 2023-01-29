@@ -8,7 +8,7 @@ import { trpc } from '@utils/trpc';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 
-import { HandleTRPCError } from './common/HandleTRPCError';
+import { HandleTRPCError } from '../common/HandleTRPCError';
 
 export function GlobalChat() {
 	const scrollTargetRef = useRef<HTMLDivElement>(null);
@@ -47,15 +47,7 @@ export function GlobalChat() {
 		onSuccess() {
 			form.reset();
 		},
-		onError: HandleTRPCError({
-			messages: [
-				['TOO_MANY_REQUESTS', 'Hey there. Slow down sending messages!'],
-				[
-					'FORBIDDEN',
-					'Hello there. It seems you have global chat turned off. You can turn it back on at Account Settings',
-				],
-			],
-		}),
+		onError: HandleTRPCError(),
 		onSettled() {
 			setLoading(false);
 		},
@@ -94,9 +86,13 @@ export function GlobalChat() {
 
 	return (
 		<>
-			<Card title="Global Chat" className="col-span-2 border-cyan-400">
+			<Card
+				title="Global Chat"
+				className="col-span-2 border-cyan-400"
+				noPadding
+			>
 				<ScrollArea style={{ height: 305 }} type="scroll">
-					<div className="p-5 grid gap-3" ref={scrollTargetRef}>
+					<div className="grid gap-2 pt-2 px-2" ref={scrollTargetRef}>
 						{messages.map((message) => (
 							<GlobalMessageComponent
 								key={message.id + message.authorId}
@@ -111,7 +107,7 @@ export function GlobalChat() {
 							sender.mutate(values);
 						}
 					})}
-					className="p-5 border-t border-gray-600"
+					className="p-5 mt-2 border-t border-gray-600"
 				>
 					<TextInput
 						placeholder="Type a message..."
@@ -130,9 +126,13 @@ function GlobalMessageComponent({
 }: {
 	message: WebSocketEvents['message'][0];
 }): JSX.Element {
+	const { data: avatar } = trpc.avatar.get.useQuery({
+		userId: message.authorId,
+	});
+
 	return (
 		<div className="flex select-none">
-			<Avatar src={message.imageURL} alt={message.authorId} size={48} />
+			<Avatar src={avatar?.url} alt={message.authorId} size={48} />
 			{message.type === 'join' ? (
 				<div className="ml-5 flex items-center">
 					<h3 className="text-lg sm:text-xl text-green-400 select-text">
