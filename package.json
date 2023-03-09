@@ -87,7 +87,7 @@
 		"autoprefixer": "^10.4.13",
 		"conventional-changelog-cli": "^2.2.2",
 		"cross-env": "^7.0.3",
-		"eslint": "8.30.0",
+		"eslint": "8.35.0",
 		"eslint-config-next": "13.1.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-import": "^2.26.0",
