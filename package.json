@@ -41,7 +41,7 @@
 		"@tabler/icons": "^1.117.0",
 		"@tanstack/react-query": "^4.20.4",
 		"@tiptap/core": "2.0.0-beta.209",
-		"@tiptap/extension-link": "2.0.0-beta.209",
+		"@tiptap/extension-link": "2.0.0-beta.220",
 		"@tiptap/react": "2.0.0-beta.209",
 		"@tiptap/starter-kit": "2.0.0-beta.209",
 		"@trpc/client": "^10.6.0",
